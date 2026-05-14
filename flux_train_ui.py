@@ -1,5 +1,4 @@
 import os
-from huggingface_hub import whoami    
 os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "1"
 import sys
 
@@ -155,18 +154,10 @@ def start_training(
     use_more_advanced_options,
     more_advanced_options,
 ):
-    push_to_hub = True
+    push_to_hub = False
     if not lora_name:
         raise gr.Error("You forgot to insert your LoRA name! This name has to be unique.")
-    try:
-        if whoami()["auth"]["accessToken"]["role"] == "write" or "repo.write" in whoami()["auth"]["accessToken"]["fineGrained"]["scoped"][0]["permissions"]:
-            gr.Info(f"Starting training locally {whoami()['name']}. Your LoRA will be available locally and in Hugging Face after it finishes.")
-        else:
-            push_to_hub = False
-            gr.Warning("Started training locally. Your LoRa will only be available locally because you didn't login with a `write` token to Hugging Face")
-    except:
-        push_to_hub = False
-        gr.Warning("Started training locally. Your LoRa will only be available locally because you didn't login with a `write` token to Hugging Face")
+    gr.Info("Starting training locally.")
             
     print("Started training")
     slugged_lora_name = slugify(lora_name)
@@ -185,13 +176,6 @@ def start_training(
     config["config"]["process"][0]["network"]["linear_alpha"] = int(rank)
     config["config"]["process"][0]["datasets"][0]["folder_path"] = dataset_folder
     config["config"]["process"][0]["save"]["push_to_hub"] = push_to_hub
-    if(push_to_hub):
-        try:
-            username = whoami()["name"]
-        except:
-            raise gr.Error("Error trying to retrieve your username. Are you sure you are logged in with Hugging Face?")
-        config["config"]["process"][0]["save"]["hf_repo_id"] = f"{username}/{slugged_lora_name}"
-        config["config"]["process"][0]["save"]["hf_private"] = True
     if concept_sentence:
         config["config"]["process"][0]["trigger_word"] = concept_sentence
     

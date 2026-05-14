@@ -975,7 +975,6 @@ class StableDiffusion:
                     requires_safety_checker=False,
                     safety_checker=None,
                     # variant="fp16",
-                    trust_remote_code=True,
                     **load_args
                 )
             else:
@@ -987,7 +986,6 @@ class StableDiffusion:
                     requires_safety_checker=False,
                     torch_dtype=self.torch_dtype,
                     safety_checker=None,
-                    trust_remote_code=True,
                     **load_args
                 )
             flush()

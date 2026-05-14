@@ -37,6 +37,8 @@ from PIL import Image, ImageDraw, ImageFont
 from PIL.ImageOps import exif_transpose
 from tqdm import tqdm
 from transformers import Sam2Model, Sam2Processor
+from ultralytics import settings
+settings.update({"sync": False})
 from ultralytics import YOLO
 
 

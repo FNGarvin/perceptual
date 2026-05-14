@@ -37,6 +37,8 @@ from PIL.ImageOps import exif_transpose
 from tqdm import tqdm
 from transformers import (AutoConfig, AutoModelForSemanticSegmentation,
                           Sam2Model, Sam2Processor, SegformerImageProcessor)
+from ultralytics import settings
+settings.update({"sync": False})
 from ultralytics import YOLO
 
 

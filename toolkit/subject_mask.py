@@ -119,6 +119,8 @@ class SubjectMaskExtractor:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
         # Lazy imports — keep import cost out of general toolkit import graph.
+        from ultralytics import settings
+        settings.update({"sync": False})
         from ultralytics import YOLO
         from transformers import (AutoConfig, AutoModelForSemanticSegmentation,
                                   Sam2Model, Sam2Processor, SegformerImageProcessor)
